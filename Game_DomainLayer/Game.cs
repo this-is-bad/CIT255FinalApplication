@@ -35,5 +35,15 @@ namespace Game_DomainLayer
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
             }
         }
+
+        /// <summary>
+        /// Format a string as a date value
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns>date-formatted string</returns>
+        public static string ConvertDateTimeToString(DateTime dateTime)
+        {
+            return dateTime.ToString("MM/dd/yyyy");
+        }
     }
 }

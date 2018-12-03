@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Game_BusinessLogicLayer
 {
-    public class GameBusinessLogicLayer
+    public class GameBLL
     {
         public const string connectionString = "Server=tcp:cit255.database.windows.net,1433;Initial Catalog=Gamiverse;Persist Security Info=False;User ID=user;Password=Password1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         public IEnumerable<Game> OriginalGameList { get; set; }
@@ -23,16 +23,6 @@ namespace Game_BusinessLogicLayer
             GamePublisherCollection = new ObservableCollection<GamePublisher>();
             GameCollection = new ObservableCollection<Game>();
             GameCollection = new ObservableCollection<Game>();
-        }
-
-        /// <summary>
-        /// Format a string as a date value
-        /// </summary>
-        /// <param name="dateTime"></param>
-        /// <returns>date-formatted string</returns>
-        private string ConvertDateTimeToString(DateTime dateTime)
-        {
-            return dateTime.ToString("MM/dd/yyyy");
         }
 
         /// <summary>

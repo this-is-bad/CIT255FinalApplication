@@ -64,6 +64,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="GameFormat.cs" />
     <Compile Include="GamePublisher.cs" />
+    <Compile Include="GameRatingList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

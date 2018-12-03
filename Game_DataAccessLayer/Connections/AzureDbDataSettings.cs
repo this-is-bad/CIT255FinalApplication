@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game_DAL.Connections
+namespace Game_DataAccessLayer
 {
     public static class AzureDbDataSettings
     {

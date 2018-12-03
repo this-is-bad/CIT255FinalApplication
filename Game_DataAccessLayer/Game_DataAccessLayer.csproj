@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connections\AzureDbDataSettings.cs" />
+    <Compile Include="DataServices\AzureDbDataService.cs" />
     <Compile Include="DataServices\IDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

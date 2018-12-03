@@ -5,7 +5,9 @@ namespace Game_DataAccessLayer
 {
     public interface IDataService
     {
-        IEnumerable<Game> ReadAll(out string statusCode);
-        void WriteAll(IEnumerable<Game> games, out string statusCode);
+        IEnumerable<Game> ReadAllGames(out string statusCode);
+        IEnumerable<GameFormat> ReadAllGameFormats(out string statusCode);
+        IEnumerable<GamePublisher> ReadAllGamePublishers(out string statusCode);
+        void WriteAllGames(IEnumerable<Game> games, out string statusCode);
     }
 }
