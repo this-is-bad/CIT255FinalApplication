@@ -17,6 +17,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.Data.Common;
+using Game_DomainLayer;
+using Game_BusinessLogicLayer;
 
 namespace Game_PresentationLayer
 {
@@ -25,29 +27,36 @@ namespace Game_PresentationLayer
     /// </summary>
     public partial class MainWindow : Window //, INotifyPropertyChanged
     {
-        GameViewModel gameViewModelObject;
+       private ObservableCollection<Game> _filteredGameCollection;
+       private IEnumerable<Game> _originalGameList { get; set; }
+       private ObservableCollection<Game> _gameCollection { get; set; }
+       private IEnumerable<GameFormat> _gameFormatList { get; set; }
+       private IEnumerable<GamePublisher> _gamePublisherList { get; set; }
 
-        public MainWindow()
+        static GameBLL _gamesBLL;
+
+        public MainWindow(GameBLL gameBLL)
         {
+            _gamesBLL = gameBLL;
             InitializeComponent();
-            gameViewModelObject = new GameViewer.ViewModel.GameViewModel();
-            this.DataContext = gameViewModelObject;
-            cmb_Rating.ItemsSource = gameViewModelObject.RatingList;
+            //gameViewModelObject = new GameViewer.ViewModel.GameViewModel();
+            this.DataContext = gameBLL;//gameViewModelObject;
+            cmb_Rating.ItemsSource = GameRatingList.RatingList;
         }
 
         private void GameViewControl_Loaded(object sender, RoutedEventArgs e)
         {
-            gameViewModelObject.LoadGames();
+            _originalGameList = _gamesBLL.GetAllGames(out string error_message);
         }
 
         private void GamePublisherControl_Loaded(object sender, RoutedEventArgs e)
         {
-            gameViewModelObject.LoadGamePublishers();
+            _gamePublisherList = _gamesBLL.GetAllGamePublishers(out string error_message);
         }
 
         private void GameFormatControl_Loaded(object sender, RoutedEventArgs e)
         {
-            gameViewModelObject.LoadGameFormats();
+            _gameFormatList = _gamesBLL.GetAllGameFormats(out string error_message);
         }
 
         private void FilterGrid()
@@ -66,7 +75,7 @@ namespace Game_PresentationLayer
             string endDate = (dtpick_EndDate.SelectedDate == null ? "" : dtpick_EndDate.SelectedDate.ToString().Trim());
             string gameName = (txt_GameName.Text == null ? "" : txt_GameName.Text.ToString().Trim());
 
-            gameViewModelObject.FilterGameCollection(formatId, publisherId, rating, beginDate, endDate, gameName);
+            _gamesBLL.FilterGameCollection(formatId, publisherId, rating, beginDate, endDate, gameName);
 
             //ObservableCollection<Game> filteredGameCollection = gameViewModelObject.GameCollection.Where(x => x.ReleaseDate.ToString().Equals(releaseDate));
 

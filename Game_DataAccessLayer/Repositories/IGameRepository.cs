@@ -12,7 +12,9 @@ namespace Game_DataAccessLayer
     /// </summary>
     public interface IGameRepository : IDisposable
     {
-        IEnumerable<Game> GetAll(out string error_message);
+        IEnumerable<Game> GetAllGames(out string error_message);
+        IEnumerable<GameFormat> GetAllGameFormats(out string error_message);
+        IEnumerable<GamePublisher> GetAllGamePublishers(out string error_message);
         Game GetById(int id, out string error_message);
         string Insert(Game game);
         string Update(Game game);

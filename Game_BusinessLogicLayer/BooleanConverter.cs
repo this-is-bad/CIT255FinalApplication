@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameViewer
+namespace Game_BusinessLogicLayer
 {
     public class BooleanConverter : IValueConverter
     {

@@ -165,9 +165,9 @@ namespace Game_DataAccessLayer
         }
 
         /// <summary>
-        /// write the current list of characters to the mongoDb collection
+        /// write the current list of games to the persistence object
         /// </summary>
-        /// <param name="characters">list of characters</param>
+        /// <param name="games">list of Games</param>
         public void WriteAllGames(IEnumerable<Game> games, out string error_message)
         {
             error_message = "";
@@ -177,9 +177,9 @@ namespace Game_DataAccessLayer
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     //
-                    // delete all documents in the collection to reset the collection
+                    // delete all games in the table to reset the collection
                     //
-                    string sd = "TRUNCATE TABLE GameView";
+                    string sd = "DELETE GameView";
                     SqlCommand del = new SqlCommand(sd, connection);
                     del.Connection.Open();
 

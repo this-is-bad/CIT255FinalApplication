@@ -19,7 +19,7 @@ namespace Game_DataAccessLayer
             _games = new List<Game>();
         }
 
-        public IEnumerable<Game> GetAll(out string error_message)
+        public IEnumerable<Game> GetAllGames(out string error_message)
         {
             error_message = "";
 
@@ -170,33 +170,6 @@ namespace Game_DataAccessLayer
             return ExecuteSql(query);
         }
 
-        private DataSet GetGameCollection(out string error_message)
-        {
-
-            DataSet dataSet = new DataSet();
-            error_message = "";
-            
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(AzureDbDataSettings.connectionString))
-                {
-                    
-                    string s = "SELECT * FROM GameView ORDER BY name, publisher_name, format";
-                    SqlDataAdapter adapter = new SqlDataAdapter();
-                    adapter.SelectCommand = new SqlCommand(
-                        s, connection);
-                    adapter.Fill(dataSet);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                error_message = ex.ToString();
-            }
-            
-            return dataSet;
-        }
-
         private string ExecuteSql(string query)
         {
             string error_message = "";
@@ -220,6 +193,88 @@ namespace Game_DataAccessLayer
             return error_message;
         }
 
+        public IEnumerable<GameFormat> GetAllGameFormats(out string error_message)
+        {
+            List<GameFormat> gameFormatList = new List<GameFormat>();
+            error_message = "";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(AzureDbDataSettings.connectionString))
+                {
+                    string s = "SELECT id, format FROM game_format UNION SELECT 0, '' ORDER BY format";
+                    SqlCommand cmd = new SqlCommand(s, connection);
+                    cmd.Connection.Open();
+                    using (DbDataReader reader = cmd.ExecuteReader())
+                    {
+                        var ordinals = new
+                        {
+                            Id = reader.GetOrdinal("id"),
+                            FormatName = reader.GetOrdinal("format")
+                        };
+
+                        while (reader.Read() == true)
+                        {
+                            GameFormat temp = new GameFormat
+                            {
+                                Id = reader.GetInt32(ordinals.Id),
+                                FormatName = reader.GetString(ordinals.FormatName)
+                            };
+
+                            gameFormatList.Add(temp);
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error_message = ex.ToString();
+            }
+
+            return gameFormatList;
+        }
+
+        public IEnumerable<GamePublisher> GetAllGamePublishers(out string error_message)
+        {
+            List<GamePublisher> gamePublisherList = new List<GamePublisher>();
+            error_message = "";
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(AzureDbDataSettings.connectionString))
+                {
+                    string s = "SELECT id, name FROM game_publisher UNION SELECT 0, '' ORDER BY name";
+                    SqlCommand cmd = new SqlCommand(s, connection);
+                    cmd.Connection.Open();
+                    using (DbDataReader reader = cmd.ExecuteReader())
+                    {
+                        var ordinals = new
+                        {
+                            Id = reader.GetOrdinal("id"),
+                            PublisherName = reader.GetOrdinal("name")
+                        };
+
+                        while (reader.Read() == true)
+                        {
+                            GamePublisher temp = new GamePublisher
+                            {
+                                Id = reader.GetInt32(ordinals.Id),
+                                PublisherName = reader.GetString(ordinals.PublisherName)
+                            };
+
+                            gamePublisherList.Add(temp);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error_message = ex.ToString();
+            }
+
+            return gamePublisherList;
+        }
         public void Dispose()
         {
             _games = null;
