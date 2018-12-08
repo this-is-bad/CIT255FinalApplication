@@ -84,7 +84,7 @@ namespace Game_DataAccessLayer
             catch (Exception ex)
             {
                 error_message = ex.ToString();
-            } 
+            }
 
             return _games;
         }
@@ -151,7 +151,7 @@ namespace Game_DataAccessLayer
                 error_message = ex.Message;
             }
 
-            return game; 
+            return game;
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace Game_DataAccessLayer
                         + "minimum_player_count, name, publisher_id, rating, release_date)" + "\n"
                         + $"VALUES ({game.Comment},{game.Discontinued},{game.FormatId},{game.MaximumPlayerCount}, "
                         + $"{game.MinimumPlayerCount},{game.GameName},{game.PublisherId},{game.Rating},{game.ReleaseDate})";
-                        
+
             return ExecuteSql(query);
         }
 
@@ -186,7 +186,7 @@ namespace Game_DataAccessLayer
 
             string query = "DELETE GameView" + "\n"
                        + $"WHERE id = {id}";
-           
+
             return ExecuteSql(query);
         }
 
@@ -317,7 +317,7 @@ namespace Game_DataAccessLayer
         /// Required because IRepository implements IDisposable
         /// </summary>
         public void Dispose()
-        {    
+        {
             //
             // Commented out this code because it was clearing out the collections in the BLL
             // To be reviewed for proper implementation of this method

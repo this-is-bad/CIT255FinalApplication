@@ -36,7 +36,7 @@ namespace Game_DataAccessLayer
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    
+
                     string s = "SELECT * FROM GameView ORDER BY name, publisher_name, format";
                     SqlCommand cmd = new SqlCommand(s, connection);
                     cmd.Connection.Open();
@@ -189,7 +189,7 @@ namespace Game_DataAccessLayer
         public void WriteAllGames(IEnumerable<Game> games, out string error_message)
         {
             error_message = "";
-        
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(_connectionString))
@@ -220,7 +220,7 @@ namespace Game_DataAccessLayer
             {
                 error_message = ex.ToString();
             }
-            
+
 
         }
 
@@ -232,14 +232,14 @@ namespace Game_DataAccessLayer
         private string ProcessGamesForInsert(List<Game> gameList)
         {
             string games = "";
-          
+
             StringBuilder sb = new StringBuilder("");
 
             foreach (Game g in gameList)
             {
                 if (!string.IsNullOrEmpty(g.GameName.Trim()))
                 {
-                    sb.Append(  "("
+                    sb.Append("("
                                 + (string.IsNullOrEmpty(g.Comment.Trim()) ? "NULL" : "'" + g.Comment + "'") + ","
                                 + (g.Discontinued ? 1 : 0).ToString() + ","
                                 + (string.IsNullOrEmpty(g.FormatId.ToString()) || g.FormatId == 0 ? "NULL" : g.FormatId.ToString()) + ","
@@ -249,7 +249,7 @@ namespace Game_DataAccessLayer
                                 + (string.IsNullOrEmpty(g.PublisherId.ToString()) || g.PublisherId == 0 ? "NULL" : g.PublisherId.ToString()) + ","
                                 + (string.IsNullOrEmpty(g.Rating.ToString()) || g.Rating == 0 ? "NULL" : g.Rating.ToString()) + ","
                                 + (string.IsNullOrEmpty(g.ReleaseDate.ToString()) ? "NULL" : "'" + g.ReleaseDate.ToString()) + "'"
-                                + ")," 
+                                + "),"
                               );
                 }
                 else
@@ -257,7 +257,7 @@ namespace Game_DataAccessLayer
                     gameList.Remove(g);
                 }
             }
-            
+
             games = sb.ToString().TrimEnd(',');
 
             return games;

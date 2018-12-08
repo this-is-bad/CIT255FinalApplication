@@ -11,7 +11,6 @@ namespace Game_DomainLayer
     /// </summary>
     public class GamePublisher
     {
-
         public int Id { get; set; }
         public string PublisherName { get; set; }
 

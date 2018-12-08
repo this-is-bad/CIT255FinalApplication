@@ -11,7 +11,6 @@ namespace Game_DomainLayer
     /// </summary>
     public class GameFormat
     {
-
         public int Id { get; set; }
         public string FormatName { get; set; }
 
