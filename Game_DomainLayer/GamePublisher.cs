@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Game_DomainLayer
 {
+    /// <summary>
+    /// Model for a GamePublisher object
+    /// </summary>
     public class GamePublisher
     {
 

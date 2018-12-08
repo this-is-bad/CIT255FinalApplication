@@ -105,6 +105,10 @@
       <Project>{21c2cb19-5329-4063-9a4b-c416937d434c}</Project>
       <Name>Game_BusinessLogicLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Game_DataAccessLayer\Game_DataAccessLayer.csproj">
+      <Project>{22a5cea2-9e23-404d-abb2-758a67896d20}</Project>
+      <Name>Game_DataAccessLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Game_DomainLayer\Game_DomainLayer.csproj">
       <Project>{e3410c38-5751-4606-a2e4-ee416b7db381}</Project>
       <Name>Game_DomainLayer</Name>

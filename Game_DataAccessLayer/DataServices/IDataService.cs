@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Game_DataAccessLayer
 {
+    /// <summary>
+    /// Data service interface
+    /// </summary>
     public interface IDataService
     {
         IEnumerable<Game> ReadAllGames(out string statusCode);

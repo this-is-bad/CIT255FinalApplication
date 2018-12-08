@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace Game_DomainLayer
 {
+    /// <summary>
+    /// Model for a Game object
+    /// </summary>
     public class Game
     {
-        //public List<string> RatingList = new List<string> { "", "1", "2", "3", "4", "5" };
-
         public int Id { get; set; }
         public string GameName { get; set; }
         public int FormatId { get; set; }

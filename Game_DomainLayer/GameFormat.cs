@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Game_DomainLayer
 {
+    /// <summary>
+    /// Model for a GameFormat object
+    /// </summary>
     public class GameFormat
     {
 
