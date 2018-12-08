@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Game_PresentationLayer"
+       
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Title="Game Viewer" FontSize="16" FontFamily="Palatino Linotype" Width="1165.376" ContentStringFormat=" {0} records found">
@@ -34,7 +35,7 @@
             </Grid.RowDefinitions>
 
             <Label Content="Game Name" HorizontalAlignment="Left" Margin="27,5,0,0" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="16" FontFamily="Palatino Linotype" Padding="0" Width="94"/>
-            <TextBox x:Name="txt_GameName" HorizontalAlignment="Left" Margin="27,5,0,0" Grid.Row="3" Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="txt_GameName_TextChanged" FontSize="16" FontFamily="Palatino Linotype" Height="28"/>
+            <TextBox x:Name="txt_GameName" HorizontalAlignment="Left" Margin="27,2,0,0" Grid.Row="3" Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" TextChanged="txt_GameName_TextChanged" FontSize="16" FontFamily="Palatino Linotype" Height="28"/>
 
             <Label Content="Publisher" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" FontSize="16" FontFamily="Palatino Linotype" Padding="0" Width="73"/>
             <ComboBox x:Name="cmb_Publisher" ItemsSource="{Binding GamePublisherCollection}" Loaded = "GamePublisherControl_Loaded" SelectedValuePath="Id" DisplayMemberPath="PublisherName" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180" Margin="10,2,0,0" Grid.Row="3" Grid.Column="1" SelectionChanged="cmb_Publisher_SelectionChanged" FontSize="16" FontFamily="Palatino Linotype" Height="28"/>
@@ -53,12 +54,12 @@
             <Label Content="End of Range" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" Grid.Column="5" VerticalAlignment="Bottom" FontSize="16" FontFamily="Palatino Linotype" Padding="0" Width="95"/>
             <DatePicker x:Name="dtpick_EndDate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="99" Margin="10,2,0,0" Grid.Row="3" Grid.Column="5" SelectedDateChanged="dtpick_EndDate_SelectedDateChanged" FontSize="16" FontFamily="Palatino Linotype" Height="30"/>
 
-            <Button Content="Clear Dates" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="3" Grid.Column="6" VerticalAlignment="Bottom" Height="28" Click="Button_Click"/>
+            <Button Content="Clear Dates" HorizontalAlignment="Left" Margin="10,0,0,2" Grid.Row="3" Grid.Column="6" VerticalAlignment="Bottom" Height="28" Click="Button_Click"/>
 
             <Label x:Name="lbl_FilteredResult" Content="{Binding ElementName=dataGridView_Games, Path=Items.Count}" HorizontalAlignment="Center" Margin="0" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="7" FontSize="16" FontFamily="Palatino Linotype" VerticalAlignment="Top" ContentStringFormat="{}{0} records found" Height="32"/>
 
         </Grid>
-        <DataGrid x:Name="dataGridView_Games" ItemsSource="{Binding GameCollection}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Loaded = "GameViewControl_Loaded" HorizontalAlignment="Left" Height="241" Margin="27,10,0,0" VerticalAlignment="Top" Width="1000" FontSize="16" FontFamily="Palatino Linotype" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="dataGridView_Games_SelectionChanged">
+        <DataGrid x:Name="dataGridView_Games" ItemsSource="{Binding GameCollection}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Loaded = "GameViewControl_Loaded" HorizontalAlignment="Left" Height="241" Margin="27,10,0,0" VerticalAlignment="Top" Width="1000" FontSize="16" FontFamily="Palatino Linotype" AutoGenerateColumns="False" IsReadOnly="True">
             <DataGrid.Columns >
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Visibility="Hidden"></DataGridTextColumn>
                 <DataGridTextColumn Header="Name" Binding="{Binding GameName}"></DataGridTextColumn>
@@ -69,7 +70,7 @@
                 <DataGridTextColumn Header="Min # Players" Binding="{Binding MinimumPlayerCount}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Max # Players" Binding="{Binding MaximumPlayerCount}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Release Date" Binding="{Binding ReleaseDate}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Discontinued" Binding="{Binding Discontinued, Converter={StaticResource BoolToYes}}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Discontinued" Binding="{Binding Discontinued, Converter={StaticResource BoolToYes}}"></DataGridTextColumn><!--, Converter={StaticResource BoolToYes}-->
                 <DataGridTextColumn Header="Rating" Binding="{Binding Rating}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Comment" Binding="{Binding Comment}"></DataGridTextColumn>
             </DataGrid.Columns>

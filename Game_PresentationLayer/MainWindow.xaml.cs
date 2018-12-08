@@ -17,6 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.Data.Common;
+using Game_DataAccessLayer;
 using Game_DomainLayer;
 using Game_BusinessLogicLayer;
 
@@ -27,47 +28,54 @@ namespace Game_PresentationLayer
     /// </summary>
     public partial class MainWindow : Window //, INotifyPropertyChanged
     {
-       private ObservableCollection<Game> _filteredGameCollection;
-       private IEnumerable<Game> _originalGameList { get; set; }
-       private ObservableCollection<Game> _gameCollection { get; set; }
-       private IEnumerable<GameFormat> _gameFormatList { get; set; }
-       private IEnumerable<GamePublisher> _gamePublisherList { get; set; }
+        GameBLL gameBLL;
+        IGameRepository gameRepository;
 
-        static GameBLL _gamesBLL;
-
-        public MainWindow(GameBLL gameBLL)
+        public MainWindow()
         {
-            _gamesBLL = gameBLL;
+            gameRepository = new AzureDBGameRepository();
+
+            gameBLL = new Game_BusinessLogicLayer.GameBLL(gameRepository);
+            
             InitializeComponent();
-            //gameViewModelObject = new GameViewer.ViewModel.GameViewModel();
-            this.DataContext = gameBLL;//gameViewModelObject;
+            this.DataContext = gameBLL;
             cmb_Rating.ItemsSource = GameRatingList.RatingList;
         }
 
+        /// <summary>
+        /// Load Games when control is loaded
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GameViewControl_Loaded(object sender, RoutedEventArgs e)
         {
-            _originalGameList = _gamesBLL.GetAllGames(out string error_message);
+            gameBLL.GetAllGames(out string error_message);     
         }
 
+        /// <summary>
+        /// Load GamePublishers when control is loaded
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GamePublisherControl_Loaded(object sender, RoutedEventArgs e)
         {
-            _gamePublisherList = _gamesBLL.GetAllGamePublishers(out string error_message);
+            gameBLL.GetAllGamePublishers(out string error_message);
         }
-
+        /// <summary>
+        /// Load GameFormats when control is loaded
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GameFormatControl_Loaded(object sender, RoutedEventArgs e)
         {
-            _gameFormatList = _gamesBLL.GetAllGameFormats(out string error_message);
+            gameBLL.GetAllGameFormats(out string error_message);
         }
 
+        /// <summary>
+        /// Filter the datagrid
+        /// </summary>
         private void FilterGrid()
         {
-            //MessageBox.Show(dtpick_BeginDate.SelectedDate.Value.Date.ToShortDateString());
-            // if I switch to N-Tier, I'll need to use StringBuilder with lambda expressions on ints to generate query string
-            //int? publisherId = (Int32?)cmb_Publisher.SelectedValue;
-            //int? formatId = (Int32?)cmb_GameFormat.SelectedValue;
-            //int? rating =  (cmb_Rating.SelectedValue.Equals(null) || cmb_Rating.SelectedValue.Equals("") ? null : (Int32?)cmb_Rating.SelectedValue);
-            //string beginDate = (dtpick_BeginDate.SelectedDate == null || dtpick_BeginDate.SelectedDate.Value.ToString().Trim() == "" ? "" : dtpick_BeginDate.SelectedDate.Value.Date.ToShortDateString());
-            //string endDate = (dtpick_EndDate.SelectedDate == null || dtpick_EndDate.SelectedDate.ToString().Trim() == "" ? "" : dtpick_EndDate.SelectedDate.Value.Date.ToShortDateString()); 
             string publisherId = (cmb_Publisher.SelectedValue == null ? "" : cmb_Publisher.SelectedValue.ToString().Trim());
             string formatId = (cmb_GameFormat.SelectedValue == null ? "" : cmb_GameFormat.SelectedValue.ToString().Trim());
             string rating = (cmb_Rating.SelectedValue == null ? "" : cmb_Rating.SelectedValue.ToString().Trim());
@@ -75,11 +83,7 @@ namespace Game_PresentationLayer
             string endDate = (dtpick_EndDate.SelectedDate == null ? "" : dtpick_EndDate.SelectedDate.ToString().Trim());
             string gameName = (txt_GameName.Text == null ? "" : txt_GameName.Text.ToString().Trim());
 
-            _gamesBLL.FilterGameCollection(formatId, publisherId, rating, beginDate, endDate, gameName);
-
-            //ObservableCollection<Game> filteredGameCollection = gameViewModelObject.GameCollection.Where(x => x.ReleaseDate.ToString().Equals(releaseDate));
-
-            //dataGridView_Games.ItemsSource = filteredGameCollection;
+            gameBLL.FilterGameCollection(formatId, publisherId, rating, beginDate, endDate, gameName);
         }
 
 
@@ -113,16 +117,17 @@ namespace Game_PresentationLayer
             FilterGrid();
         }
 
+        /// <summary>
+        /// Clear datepicker fields
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             dtpick_BeginDate.SelectedDate = null;
             dtpick_EndDate.SelectedDate = null;
         }
 
-        private void dataGridView_Games_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 
 }

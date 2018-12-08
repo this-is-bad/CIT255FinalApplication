@@ -10,6 +10,9 @@ using Game_DomainLayer;
 
 namespace Game_DataAccessLayer
 {
+    /// <summary>
+    /// Azure database data service
+    /// </summary>
     public class AzureDbDataService : IDataService
     {
         static string _connectionString;
@@ -19,6 +22,11 @@ namespace Game_DataAccessLayer
             _connectionString = AzureDbDataSettings.connectionString;
         }
 
+        /// <summary>
+        /// Retrieve a list of all Games in the database
+        /// </summary>
+        /// <param name="error_message"></param>
+        /// <returns></returns>
         public IEnumerable<Game> ReadAllGames(out string error_message)
         {
             List<Game> gameList = new List<Game>();
@@ -81,6 +89,11 @@ namespace Game_DataAccessLayer
             return gameList;
         }
 
+        /// <summary>
+        /// Retrieve  a list of all GameFormats in the database
+        /// </summary>
+        /// <param name="error_message"></param>
+        /// <returns></returns>
         public IEnumerable<GameFormat> ReadAllGameFormats(out string error_message)
         {
             List<GameFormat> gameFormatList = new List<GameFormat>();
@@ -123,6 +136,11 @@ namespace Game_DataAccessLayer
             return gameFormatList;
         }
 
+        /// <summary>
+        /// Retrieve  a list of all GamePublishers in the database
+        /// </summary>
+        /// <param name="error_message"></param>
+        /// <returns></returns>
         public IEnumerable<GamePublisher> ReadAllGamePublishers(out string error_message)
         {
             List<GamePublisher> gamePublisherList = new List<GamePublisher>();
@@ -165,7 +183,7 @@ namespace Game_DataAccessLayer
         }
 
         /// <summary>
-        /// write the current list of games to the persistence object
+        /// Write the current list of games to the database
         /// </summary>
         /// <param name="games">list of Games</param>
         public void WriteAllGames(IEnumerable<Game> games, out string error_message)
@@ -206,6 +224,11 @@ namespace Game_DataAccessLayer
 
         }
 
+        /// <summary>
+        /// Scrub the data before inserting to the database
+        /// </summary>
+        /// <param name="gameList"></param>
+        /// <returns></returns>
         private string ProcessGamesForInsert(List<Game> gameList)
         {
             string games = "";

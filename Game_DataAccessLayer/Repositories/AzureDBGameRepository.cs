@@ -13,12 +13,21 @@ namespace Game_DataAccessLayer
     public class AzureDBGameRepository : IGameRepository
     {
         List<Game> _games;
+        List<GameFormat> _gameFormats;
+        List<GamePublisher> _gamePublishers;
 
         public AzureDBGameRepository()
         {
             _games = new List<Game>();
+            _gameFormats = new List<GameFormat>();
+            _gamePublishers = new List<GamePublisher>();
         }
 
+        /// <summary>
+        /// Retrieve a list of Games
+        /// </summary>
+        /// <param name="error_message"></param>
+        /// <returns></returns>
         public IEnumerable<Game> GetAllGames(out string error_message)
         {
             error_message = "";
@@ -75,11 +84,17 @@ namespace Game_DataAccessLayer
             catch (Exception ex)
             {
                 error_message = ex.ToString();
-            }
+            } 
 
             return _games;
         }
 
+        /// <summary>
+        /// Retrieve a single Game by its Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="error_message"></param>
+        /// <returns></returns>
         public Game GetById(int id, out string error_message)
         {
             error_message = "";
@@ -111,7 +126,7 @@ namespace Game_DataAccessLayer
                             Comment = reader.GetOrdinal("comment")
                         };
 
-                        while (reader.Read() == true)
+                        while (reader.Read())
                         {
 
                             game.Id = reader.GetInt32(ordinals.Id);
@@ -139,6 +154,11 @@ namespace Game_DataAccessLayer
             return game; 
         }
 
+        /// <summary>
+        /// Insert a new game into the database
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
         public string Insert(Game game)
         {
             string query = $"IF NOT EXISTS (SELECT 1 FROM GameView WHERE name = {game.GameName} AND format_id = {game.FormatId} AND publisher_id = {game.PublisherId})" + "\n"
@@ -170,6 +190,11 @@ namespace Game_DataAccessLayer
             return ExecuteSql(query);
         }
 
+        /// <summary>
+        /// Execute a SQL query string
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         private string ExecuteSql(string query)
         {
             string error_message = "";
@@ -193,17 +218,22 @@ namespace Game_DataAccessLayer
             return error_message;
         }
 
+        /// <summary>
+        /// Retrieve a list of GameFormats
+        /// </summary>
+        /// <param name="error_message"></param>
+        /// <returns></returns>
         public IEnumerable<GameFormat> GetAllGameFormats(out string error_message)
         {
-            List<GameFormat> gameFormatList = new List<GameFormat>();
+
             error_message = "";
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(AzureDbDataSettings.connectionString))
                 {
-                    string s = "SELECT id, format FROM game_format UNION SELECT 0, '' ORDER BY format";
-                    SqlCommand cmd = new SqlCommand(s, connection);
+                    string query = "SELECT id, format FROM game_format UNION SELECT 0, '' ORDER BY format";
+                    SqlCommand cmd = new SqlCommand(query, connection);
                     cmd.Connection.Open();
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
@@ -213,7 +243,7 @@ namespace Game_DataAccessLayer
                             FormatName = reader.GetOrdinal("format")
                         };
 
-                        while (reader.Read() == true)
+                        while (reader.Read())
                         {
                             GameFormat temp = new GameFormat
                             {
@@ -221,7 +251,7 @@ namespace Game_DataAccessLayer
                                 FormatName = reader.GetString(ordinals.FormatName)
                             };
 
-                            gameFormatList.Add(temp);
+                            _gameFormats.Add(temp);
                         }
                     }
 
@@ -232,20 +262,25 @@ namespace Game_DataAccessLayer
                 error_message = ex.ToString();
             }
 
-            return gameFormatList;
+            return _gameFormats;
         }
 
+        /// <summary>
+        /// Retrieve a list of GamePublishers
+        /// </summary>
+        /// <param name="error_message"></param>
+        /// <returns></returns>
         public IEnumerable<GamePublisher> GetAllGamePublishers(out string error_message)
         {
-            List<GamePublisher> gamePublisherList = new List<GamePublisher>();
+
             error_message = "";
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(AzureDbDataSettings.connectionString))
                 {
-                    string s = "SELECT id, name FROM game_publisher UNION SELECT 0, '' ORDER BY name";
-                    SqlCommand cmd = new SqlCommand(s, connection);
+                    string query = "SELECT id, name FROM game_publisher UNION SELECT 0, '' ORDER BY name";
+                    SqlCommand cmd = new SqlCommand(query, connection);
                     cmd.Connection.Open();
                     using (DbDataReader reader = cmd.ExecuteReader())
                     {
@@ -255,15 +290,16 @@ namespace Game_DataAccessLayer
                             PublisherName = reader.GetOrdinal("name")
                         };
 
-                        while (reader.Read() == true)
+                        while (reader.Read())
                         {
+                            bool ro = reader.HasRows;
                             GamePublisher temp = new GamePublisher
                             {
                                 Id = reader.GetInt32(ordinals.Id),
                                 PublisherName = reader.GetString(ordinals.PublisherName)
                             };
 
-                            gamePublisherList.Add(temp);
+                            _gamePublishers.Add(temp);
                         }
                     }
                 }
@@ -273,11 +309,22 @@ namespace Game_DataAccessLayer
                 error_message = ex.ToString();
             }
 
-            return gamePublisherList;
+            return _gamePublishers;
         }
+
+        /// <summary>
+        /// Dispose of unmanaged objects
+        /// Required because IRepository implements IDisposable
+        /// </summary>
         public void Dispose()
-        {
-            _games = null;
+        {    
+            //
+            // Commented out this code because it was clearing out the collections in the BLL
+            // To be reviewed for proper implementation of this method
+            //
+            //_gameFormats.RemoveAll(item => item.Id > -1);
+            //_gamePublishers.RemoveAll(item => item.Id > -1);
+            //_games.RemoveAll(item => item.Id > -1);
         }
     }
 }

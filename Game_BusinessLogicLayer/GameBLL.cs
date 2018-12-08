@@ -8,35 +8,43 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Game_BusinessLogicLayer
-{
+{   
+    /// <summary>
+    /// GameViewer business logic class
+    /// </summary>
     public class GameBLL
     {
+        private IEnumerable<Game> _originalGameList { get; set; }
+        public ObservableCollection<Game> GameCollection { get; set; }
+        public ObservableCollection<GameFormat> GameFormatCollection { get; set; }
+        public ObservableCollection<GamePublisher> GamePublisherCollection { get; set; }
 
         IGameRepository _gameRepository;
-        BooleanConverter _booleanConverter;
        
         public GameBLL(IGameRepository gameRepository)
         {
             _gameRepository = gameRepository;
+            GameFormatCollection = new ObservableCollection<GameFormat>();
+            GamePublisherCollection = new ObservableCollection<GamePublisher>();
+            GameCollection = new ObservableCollection<Game>();
         }
 
         /// <summary>
-        /// Get an IEnumerable of games
+        /// Load an ObservableCollection with Games
         /// </summary>
         /// <param name="error_message"></param>
         /// <returns></returns>
-        public IEnumerable<Game> GetAllGames(out string error_message)
+        public void GetAllGames(out string error_message)
         {
-            List<Game> games = null;
-
+            _originalGameList = null;
+            GameCollection.Clear();
             error_message = "";
 
             try
             {
                 using (_gameRepository)
                 {
-                    games = _gameRepository.GetAllGames(out error_message) as List<Game>;
-                    
+                    _originalGameList = _gameRepository.GetAllGames(out error_message);                    
                 }
             }
             catch (Exception ex)
@@ -44,7 +52,10 @@ namespace Game_BusinessLogicLayer
                 error_message = ex.ToString();
             }
 
-            return games;
+            foreach(Game game in _originalGameList)
+            {
+                GameCollection.Add(game);
+            }
         }
 
         /// <summary>
@@ -52,9 +63,9 @@ namespace Game_BusinessLogicLayer
         /// </summary>
         /// <param name="error_message"></param>
         /// <returns></returns>
-        public IEnumerable<GameFormat> GetAllGameFormats(out string error_message)
+        public void GetAllGameFormats(out string error_message)
         {
-            List<GameFormat> gameFormats = null;
+            IEnumerable<GameFormat> gameFormats = new List<GameFormat>();
 
             error_message = "";
 
@@ -62,8 +73,12 @@ namespace Game_BusinessLogicLayer
             {
                 using (_gameRepository)
                 {
-                    gameFormats = _gameRepository.GetAllGameFormats(out error_message) as List<GameFormat>;
+                    gameFormats = _gameRepository.GetAllGameFormats(out error_message);
+                }
 
+                foreach (GameFormat format in gameFormats)
+                {
+                    GameFormatCollection.Add(format);
                 }
             }
             catch (Exception ex)
@@ -71,7 +86,6 @@ namespace Game_BusinessLogicLayer
                 error_message = ex.ToString();
             }
 
-            return gameFormats;
         }
 
         /// <summary>
@@ -79,9 +93,9 @@ namespace Game_BusinessLogicLayer
         /// </summary>
         /// <param name="error_message"></param>
         /// <returns></returns>
-        public IEnumerable<GamePublisher> GetAllGamePublishers(out string error_message)
+        public void GetAllGamePublishers(out string error_message)
         {
-            List<GamePublisher> gamePublishers = null;
+            IEnumerable<GamePublisher> gamePublishers = new List<GamePublisher>();
 
             error_message = "";
 
@@ -89,16 +103,18 @@ namespace Game_BusinessLogicLayer
             {
                 using (_gameRepository)
                 {
-                    gamePublishers = _gameRepository.GetAllGamePublishers(out error_message) as List<GamePublisher>;
-
+                    gamePublishers = _gameRepository.GetAllGamePublishers(out error_message);
+                }
+                
+                foreach (GamePublisher publisher in gamePublishers)
+                {
+                    GamePublisherCollection.Add(publisher);
                 }
             }
             catch (Exception ex)
             {
                 error_message = ex.ToString();
             }
-
-            return gamePublishers;
         }
 
         /// <summary>
@@ -156,6 +172,54 @@ namespace Game_BusinessLogicLayer
         public string DeleteGame(int id)
         {
             return _gameRepository.Delete(id);
-        }      
+        }
+
+        /// <summary>
+        /// Filters the game collection
+        /// </summary>
+        /// <param name="formatIdString"></param>
+        /// <param name="publisherIdString"></param>
+        /// <param name="ratingString"></param>
+        /// <param name="beginDate"></param>
+        /// <param name="endDate"></param>
+        /// <param name="gameName"></param>
+        public void FilterGameCollection(string formatIdString, string publisherIdString, string ratingString, string beginDate, string endDate, string gameName)
+        {           
+
+            // process the inputs
+            int.TryParse(formatIdString, out int formatId);
+            int.TryParse(publisherIdString, out int publisherId);
+            int.TryParse(ratingString, out int rating);
+
+            if (DateTime.TryParse(beginDate, out DateTime beginDT))
+            {
+                beginDate = beginDT.Date.ToShortDateString();
+            }
+
+            if (DateTime.TryParse(endDate, out DateTime endDT))
+            {
+                endDate = endDT.Date.ToShortDateString();
+            }
+
+            //GameCollection = (ObservableCollection<Game>)
+            IEnumerable<Game> outputGameList =
+                            (from g in _originalGameList
+                             where g.FormatId == (formatId == 0 ? g.FormatId : formatId)
+                             && g.PublisherId == (publisherId == 0 ? g.PublisherId : publisherId)
+                             && g.Rating == (rating == 0 ? g.Rating : rating)
+                             && g.GameName.ToLower().Contains(gameName.ToLower())
+                             && (beginDate == null || beginDate == "" ? 1 == 1 : DateTime.Parse(g.ReleaseDate) >= DateTime.Parse(beginDate == "" ? g.ReleaseDate : beginDate))
+                             && DateTime.Parse(g.ReleaseDate) <= DateTime.Parse(endDate == "" ? g.ReleaseDate : endDate)
+                             orderby g.GameName, g.PublisherName, g.FormatName
+                             select g);
+
+            GameCollection.Clear();
+
+            foreach (Game game in outputGameList)
+            {
+                GameCollection.Add(game);
+            }
+        }
+
     }
 }
