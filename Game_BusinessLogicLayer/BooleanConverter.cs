@@ -15,7 +15,7 @@ namespace Game_BusinessLogicLayer
 
         public BooleanConverter()
         {
-            
+
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace Game_BusinessLogicLayer
         /// <param name="targetType"></param>
         /// <param name="parameter"></param>
         /// <param name="culture"></param>
-        /// <returns></returns> 
+        /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var boolValue = value is bool && (bool)value;
