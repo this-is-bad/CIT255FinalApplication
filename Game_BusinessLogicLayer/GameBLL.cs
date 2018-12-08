@@ -18,9 +18,6 @@ namespace Game_BusinessLogicLayer
         public ObservableCollection<Game> GameCollection { get; set; }
         public ObservableCollection<GameFormat> GameFormatCollection { get; set; }
         public ObservableCollection<GamePublisher> GamePublisherCollection { get; set; }
-        public List<string> GameRateList;
-
-        
         IGameRepository _gameRepository;
 
         public GameBLL(IGameRepository gameRepository)
@@ -29,7 +26,6 @@ namespace Game_BusinessLogicLayer
             GameFormatCollection = new ObservableCollection<GameFormat>();
             GamePublisherCollection = new ObservableCollection<GamePublisher>();
             GameCollection = new ObservableCollection<Game>();
-            GameRateList = new List<string>();
         }
 
         /// <summary>
@@ -89,11 +85,6 @@ namespace Game_BusinessLogicLayer
                 error_message = ex.ToString();
             }
 
-        }
-
-        public void GetGameRatings()
-        {
-            GameRateList = GameRatingList.RatingList;
         }
 
         /// <summary>
