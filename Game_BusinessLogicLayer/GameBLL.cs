@@ -18,7 +18,7 @@ namespace Game_BusinessLogicLayer
         public ObservableCollection<Game> GameCollection { get; set; }
         public ObservableCollection<GameFormat> GameFormatCollection { get; set; }
         public ObservableCollection<GamePublisher> GamePublisherCollection { get; set; }
-
+        public List<string> gameRatingList = GameRatingList.RatingList;
         IGameRepository _gameRepository;
        
         public GameBLL(IGameRepository gameRepository)

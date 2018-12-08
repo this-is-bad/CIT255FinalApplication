@@ -39,7 +39,7 @@ namespace Game_PresentationLayer
             
             InitializeComponent();
             this.DataContext = gameBLL;
-            cmb_Rating.ItemsSource = GameRatingList.RatingList;
+           // cmb_Rating.ItemsSource = GameRatingList.RatingList;
         }
 
         /// <summary>
@@ -122,12 +122,36 @@ namespace Game_PresentationLayer
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btn_ClearDates_Click(object sender, RoutedEventArgs e)
         {
             dtpick_BeginDate.SelectedDate = null;
             dtpick_EndDate.SelectedDate = null;
         }
 
+        private void btn_Exit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btn_Detail_Click(object sender, RoutedEventArgs e)
+        {
+            Game game = dataGridView_Games.SelectedItem as Game;
+            if (game.Id > 0)
+            {
+                DetailWindow detailWindow = new DetailWindow(gameBLL, game.Id);
+                detailWindow.ShowDialog();
+            }
+            else
+            {
+                txtblk_Message.Text = "Please select a game from the grid";
+            }
+        }
+
+        private void btn_Add_Click(object sender, RoutedEventArgs e)
+        {
+            DetailWindow detailWindow = new DetailWindow(gameBLL);
+            detailWindow.ShowDialog();
+        }
     }
 
 }
