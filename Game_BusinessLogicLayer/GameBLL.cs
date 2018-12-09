@@ -27,7 +27,7 @@ namespace Game_BusinessLogicLayer
             GamePublisherCollection = new ObservableCollection<GamePublisher>();
             GameCollection = new ObservableCollection<Game>();
         }
-
+        
         /// <summary>
         /// Load an ObservableCollection with Games
         /// </summary>
@@ -150,7 +150,12 @@ namespace Game_BusinessLogicLayer
         /// <returns></returns>
         public string AddGame(Game game)
         {
-            return _gameRepository.Insert(game);
+            string result = "";
+            result = _gameRepository.Insert(game);
+
+            GetAllGames(out string error_message);
+
+            return result;
         }
 
         /// <summary>
@@ -160,7 +165,12 @@ namespace Game_BusinessLogicLayer
         /// <returns></returns>
         public string UpdateGame(Game game)
         {
-            return _gameRepository.Update(game);
+            string result = "";
+            result = _gameRepository.Update(game);
+
+            GetAllGames(out string error_message);
+
+            return result;
         }
 
         /// <summary>
@@ -170,7 +180,13 @@ namespace Game_BusinessLogicLayer
         /// <returns></returns>
         public string DeleteGame(int id)
         {
-            return _gameRepository.Delete(id);
+            string result = "";
+            result = _gameRepository.Delete(id);
+
+            GetAllGames(out string error_message);
+
+            return result;
+
         }
 
         /// <summary>

@@ -157,6 +157,11 @@ namespace Game_PresentationLayer
             DetailWindow detailWindow = new DetailWindow(gameBLL);
             detailWindow.ShowDialog();
         }
+
+        private void dataGridView_Games_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            gameBLL.GetAllGameFormats(out string error_message);
+        }
     }
 
 }

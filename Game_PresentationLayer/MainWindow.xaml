@@ -59,7 +59,7 @@
             <Label x:Name="lbl_FilteredResult" Content="{Binding ElementName=dataGridView_Games, Path=Items.Count}" HorizontalAlignment="Center" Margin="0" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="7" FontSize="16" FontFamily="Palatino Linotype" VerticalAlignment="Top" ContentStringFormat="{}{0} records found" Height="32"/>
 
         </Grid>
-        <DataGrid x:Name="dataGridView_Games" ItemsSource="{Binding GameCollection}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Loaded = "GameViewControl_Loaded" HorizontalAlignment="Left" Height="241" Margin="27,10,0,0" VerticalAlignment="Top" Width="1000" FontSize="16" FontFamily="Palatino Linotype" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid x:Name="dataGridView_Games" ItemsSource="{Binding GameCollection}" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Loaded = "GameViewControl_Loaded" HorizontalAlignment="Left" Height="241" Margin="27,10,0,0" VerticalAlignment="Top" Width="1000" FontSize="16" FontFamily="Palatino Linotype" AutoGenerateColumns="False" IsReadOnly="True" DataContextChanged="dataGridView_Games_DataContextChanged">
             <DataGrid.Columns >
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Visibility="Hidden"></DataGridTextColumn>
                 <DataGridTextColumn Header="Name" Binding="{Binding GameName}"></DataGridTextColumn>
