@@ -7,14 +7,14 @@
        
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="Game Viewer" FontSize="16" FontFamily="Palatino Linotype" Width="1165.376" ContentStringFormat=" {0} records found">
-     <Window.Resources>
+        Title="Game Viewer" FontSize="16" FontFamily="Palatino Linotype" Height="Auto" Width="1064" ContentStringFormat=" {0} records found">
+    <Window.Resources>
         <local:BooleanConverter x:Key="BoolToYes" />
     </Window.Resources>
     <Window.Background>
         <ImageBrush ImageSource="Images/parchment.jpg" />
     </Window.Background>
-    <StackPanel >
+    <StackPanel>
         <Label Content="Welcome, Gamer" HorizontalAlignment="Left" Margin="0" Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" FontSize="24" FontFamily="Palatino Linotype" Height="42" Width="192" />
         <Grid>
             <Grid.ColumnDefinitions>
@@ -44,7 +44,7 @@
             <ComboBox x:Name="cmb_GameFormat" ItemsSource="{Binding GameFormatCollection}" Loaded = "GameFormatControl_Loaded" SelectedValuePath="Id" DisplayMemberPath="FormatName" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180" Margin="10,2,0,0" Grid.Row="3" Grid.Column="2" SelectionChanged="cmb_GameFormat_SelectionChanged" FontSize="16" FontFamily="Palatino Linotype" Height="28"/>
 
             <Label Content="Rating" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" FontSize="16" FontFamily="Palatino Linotype" Padding="0" Width="52"/>
-            <ComboBox x:Name="cmb_Rating" ItemsSource="{Binding RatingList}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="49" Margin="10,2,0,0" Grid.Row="3" Grid.Column="3" SelectionChanged="cmb_Rating_SelectionChanged" FontSize="16" FontFamily="Palatino Linotype" Height="28"/>
+            <ComboBox x:Name="cmb_Rating" ItemsSource="{Binding Source=gameRatingList}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="49" Margin="10,2,0,0" Grid.Row="3" Grid.Column="3" SelectionChanged="cmb_Rating_SelectionChanged" FontSize="16" FontFamily="Palatino Linotype" Height="28" />
 
             <Label Content="Date of Publication" HorizontalAlignment="Center" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="4" Margin="41,10,42,0" VerticalAlignment="Top" FontSize="16" FontFamily="Palatino Linotype" HorizontalContentAlignment="Center" Height="27" Padding="0" Width="136" VerticalContentAlignment="Bottom"/>
 
@@ -54,7 +54,7 @@
             <Label Content="End of Range" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" Grid.Column="5" VerticalAlignment="Bottom" FontSize="16" FontFamily="Palatino Linotype" Padding="0" Width="95"/>
             <DatePicker x:Name="dtpick_EndDate" HorizontalAlignment="Left" VerticalAlignment="Top" Width="99" Margin="10,2,0,0" Grid.Row="3" Grid.Column="5" SelectedDateChanged="dtpick_EndDate_SelectedDateChanged" FontSize="16" FontFamily="Palatino Linotype" Height="30"/>
 
-            <Button Content="Clear Dates" HorizontalAlignment="Left" Margin="10,0,0,2" Grid.Row="3" Grid.Column="6" VerticalAlignment="Bottom" Height="28" Click="Button_Click"/>
+            <Button x:Name="btn_ClearDates" Content="Clear Dates" HorizontalAlignment="Left" Margin="10,2,0,2" Grid.Row="3" Grid.Column="6" Click="btn_ClearDates_Click"/>
 
             <Label x:Name="lbl_FilteredResult" Content="{Binding ElementName=dataGridView_Games, Path=Items.Count}" HorizontalAlignment="Center" Margin="0" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="7" FontSize="16" FontFamily="Palatino Linotype" VerticalAlignment="Top" ContentStringFormat="{}{0} records found" Height="32"/>
 
@@ -70,10 +70,24 @@
                 <DataGridTextColumn Header="Min # Players" Binding="{Binding MinimumPlayerCount}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Max # Players" Binding="{Binding MaximumPlayerCount}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Release Date" Binding="{Binding ReleaseDate}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Discontinued" Binding="{Binding Discontinued, Converter={StaticResource BoolToYes}}"></DataGridTextColumn><!--, Converter={StaticResource BoolToYes}-->
+                <DataGridTextColumn Header="Discontinued" Binding="{Binding Discontinued, Converter={StaticResource BoolToYes}}" />
                 <DataGridTextColumn Header="Rating" Binding="{Binding Rating}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Comment" Binding="{Binding Comment}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Grid Width="{Binding ElementName=dataGridView_Games, Path=ActualWidth, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Margin="{Binding ElementName=dataGridView_Games, Path=Margin, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Button x:Name="btn_Add" Content="Add New Game" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Click="btn_Add_Click" Margin="0,2,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="btn_Detail" Content="View Game Detail" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Click="btn_Detail_Click" Margin="0,5,0,0" VerticalAlignment="Center"/>
+            <Button x:Name="btn_Exit" Content="Exit" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="2" Click="btn_Exit_Click" Margin="0,5,0,0" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
+        </Grid>
+        <TextBlock x:Name="txtblk_Message" Margin="0,10,0,0" TextWrapping="Wrap" HorizontalAlignment="Center"/>
     </StackPanel>
 </Window>

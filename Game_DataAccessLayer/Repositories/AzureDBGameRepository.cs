@@ -13,11 +13,13 @@ namespace Game_DataAccessLayer
     public class AzureDBGameRepository : IGameRepository
     {
         List<Game> _games;
+        Game _game;
         List<GameFormat> _gameFormats;
         List<GamePublisher> _gamePublishers;
 
         public AzureDBGameRepository()
         {
+            _game = new Game();
             _games = new List<Game>();
             _gameFormats = new List<GameFormat>();
             _gamePublishers = new List<GamePublisher>();
@@ -99,7 +101,7 @@ namespace Game_DataAccessLayer
         {
             error_message = "";
 
-            Game game = null;
+            _game = new Game();
 
             try
             {
@@ -129,18 +131,18 @@ namespace Game_DataAccessLayer
                         while (reader.Read())
                         {
 
-                            game.Id = reader.GetInt32(ordinals.Id);
-                            game.GameName = reader.GetString(ordinals.GameName);
-                            game.FormatId = reader.GetInt32(ordinals.FormatId);
-                            game.FormatName = reader.GetString(ordinals.FormatName);
-                            game.PublisherId = reader.GetInt32(ordinals.PublisherId);
-                            game.PublisherName = reader.GetString(ordinals.PublisherName);
-                            game.MinimumPlayerCount = reader.GetInt32(ordinals.MinimumPlayerCount);
-                            game.MaximumPlayerCount = reader.GetInt32(ordinals.MaximumPlayerCount);
-                            game.ReleaseDate = Game.ConvertDateTimeToString(reader.GetDateTime(ordinals.ReleaseDate));
-                            game.Discontinued = reader.GetBoolean(ordinals.Discontinued);
-                            game.Rating = reader.GetInt32(ordinals.Rating);
-                            game.Comment = reader.GetString(ordinals.Comment);
+                            _game.Id = reader.GetInt32(ordinals.Id);
+                            _game.GameName = reader.GetString(ordinals.GameName);
+                            _game.FormatId = reader.GetInt32(ordinals.FormatId);
+                            _game.FormatName = reader.GetString(ordinals.FormatName);
+                            _game.PublisherId = reader.GetInt32(ordinals.PublisherId);
+                            _game.PublisherName = reader.GetString(ordinals.PublisherName);
+                            _game.MinimumPlayerCount = reader.GetInt32(ordinals.MinimumPlayerCount);
+                            _game.MaximumPlayerCount = reader.GetInt32(ordinals.MaximumPlayerCount);
+                            _game.ReleaseDate = Game.ConvertDateTimeToString(reader.GetDateTime(ordinals.ReleaseDate));
+                            _game.Discontinued = reader.GetBoolean(ordinals.Discontinued);
+                            _game.Rating = reader.GetInt32(ordinals.Rating);
+                            _game.Comment = reader.GetString(ordinals.Comment);
 
                         }
                     }
@@ -151,7 +153,7 @@ namespace Game_DataAccessLayer
                 error_message = ex.Message;
             }
 
-            return game;
+            return _game;
         }
 
         /// <summary>
@@ -161,18 +163,18 @@ namespace Game_DataAccessLayer
         /// <returns></returns>
         public string Insert(Game game)
         {
-            string query = $"IF NOT EXISTS (SELECT 1 FROM GameView WHERE name = {game.GameName} AND format_id = {game.FormatId} AND publisher_id = {game.PublisherId})" + "\n"
+            string query = $"IF NOT EXISTS (SELECT 1 FROM GameView WHERE name = '{game.GameName}' AND format_id = {game.FormatId} AND publisher_id = {game.PublisherId})" + "\n"
                         + "INSERT GameView (comment, discontinued, format_id, maximum_player_count, "
                         + "minimum_player_count, name, publisher_id, rating, release_date)" + "\n"
-                        + $"VALUES ({game.Comment},{game.Discontinued},{game.FormatId},{game.MaximumPlayerCount}, "
-                        + $"{game.MinimumPlayerCount},{game.GameName},{game.PublisherId},{game.Rating},{game.ReleaseDate})";
+                        + $"VALUES ('{game.Comment}',{(game.Discontinued ? 1 : 0)},{game.FormatId},{game.MaximumPlayerCount}, "
+                        + $"{game.MinimumPlayerCount},'{game.GameName}',{game.PublisherId},{game.Rating},'{game.ReleaseDate}')";
 
             return ExecuteSql(query);
         }
 
         public string Update(Game game)
         {
-            string query = $"IF NOT EXISTS (SELECT 1 FROM GameView WHERE name = {game.GameName} AND format_id = {game.FormatId} AND publisher_id = {game.PublisherId})" + "\n"
+            string query = $"IF NOT EXISTS (SELECT 1 FROM GameView WHERE name = '{game.GameName}' AND format_id = {game.FormatId} AND publisher_id = {game.PublisherId})" + "\n"
                           + "UPDATE GameView" + "\n"
                           + $"SET comment = '{game.Comment}',discontinued = '{(game.Discontinued ? 1 : 0)}', format_id = {game.FormatId}, maximum_player_count = {game.MaximumPlayerCount}, "
                           + $"minimum_player_count = {game.MinimumPlayerCount}, name = '{game.GameName}' , publisher_id = {game.PublisherId}, rating = {game.Rating}, release_date = '{game.ReleaseDate}')"

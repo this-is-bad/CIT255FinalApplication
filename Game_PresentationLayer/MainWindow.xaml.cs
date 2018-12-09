@@ -26,7 +26,7 @@ namespace Game_PresentationLayer
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window //, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
         GameBLL gameBLL;
         IGameRepository gameRepository;
@@ -35,8 +35,8 @@ namespace Game_PresentationLayer
         {
             gameRepository = new AzureDBGameRepository();
 
-            gameBLL = new Game_BusinessLogicLayer.GameBLL(gameRepository);
-            
+            gameBLL = new GameBLL(gameRepository);
+
             InitializeComponent();
             this.DataContext = gameBLL;
             cmb_Rating.ItemsSource = GameRatingList.RatingList;
@@ -49,7 +49,7 @@ namespace Game_PresentationLayer
         /// <param name="e"></param>
         private void GameViewControl_Loaded(object sender, RoutedEventArgs e)
         {
-            gameBLL.GetAllGames(out string error_message);     
+            gameBLL.GetAllGames(out string error_message);
         }
 
         /// <summary>
@@ -61,6 +61,7 @@ namespace Game_PresentationLayer
         {
             gameBLL.GetAllGamePublishers(out string error_message);
         }
+
         /// <summary>
         /// Load GameFormats when control is loaded
         /// </summary>
@@ -122,12 +123,40 @@ namespace Game_PresentationLayer
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btn_ClearDates_Click(object sender, RoutedEventArgs e)
         {
             dtpick_BeginDate.SelectedDate = null;
             dtpick_EndDate.SelectedDate = null;
         }
 
+        private void btn_Exit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btn_Detail_Click(object sender, RoutedEventArgs e)
+        {
+            if (dataGridView_Games.SelectedIndex > -1)
+            {
+                Game game = dataGridView_Games.SelectedItem as Game;
+
+                if (game.Id > 0)
+                {
+                    DetailWindow detailWindow = new DetailWindow(gameBLL, game.Id);
+                    detailWindow.ShowDialog();
+                }
+            }
+            else
+            {
+                txtblk_Message.Text = "Please select a game from the grid";
+            }
+        }
+
+        private void btn_Add_Click(object sender, RoutedEventArgs e)
+        {
+            DetailWindow detailWindow = new DetailWindow(gameBLL);
+            detailWindow.ShowDialog();
+        }
     }
 
 }

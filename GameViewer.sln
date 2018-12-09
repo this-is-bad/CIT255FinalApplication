@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game_DomainLayer", "Game_DomainLayer\Game_DomainLayer.csproj", "{E3410C38-5751-4606-A2E4-EE416B7DB381}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game_PresentationLayer", "G:\CIT255FinalApplication-master\Game_PresentationLayer\Game_PresentationLayer.csproj", "{905603E0-4167-496C-AA8E-094940E89ADA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game_PresentationLayer", "Game_PresentationLayer\Game_PresentationLayer.csproj", "{905603E0-4167-496C-AA8E-094940E89ADA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
