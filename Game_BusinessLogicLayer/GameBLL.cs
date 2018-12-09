@@ -65,7 +65,7 @@ namespace Game_BusinessLogicLayer
         public void GetAllGameFormats(out string error_message)
         {
             IEnumerable<GameFormat> gameFormats = new List<GameFormat>();
-            GameFormatCollection.Clear();        
+                   
             error_message = "";
 
             try
@@ -74,7 +74,7 @@ namespace Game_BusinessLogicLayer
                 {
                     gameFormats = _gameRepository.GetAllGameFormats(out error_message);
                 }
-
+                GameFormatCollection.Clear();
                 foreach (GameFormat format in gameFormats)
                 {
                     GameFormatCollection.Add(format);
@@ -95,7 +95,7 @@ namespace Game_BusinessLogicLayer
         public void GetAllGamePublishers(out string error_message)
         {
             IEnumerable<GamePublisher> gamePublishers = new List<GamePublisher>();
-            GamePublisherCollection.Clear();
+            
             error_message = "";
 
             try
@@ -104,7 +104,7 @@ namespace Game_BusinessLogicLayer
                 {
                     gamePublishers = _gameRepository.GetAllGamePublishers(out error_message);
                 }
-
+                GamePublisherCollection.Clear();
                 foreach (GamePublisher publisher in gamePublishers)
                 {
                     GamePublisherCollection.Add(publisher);
