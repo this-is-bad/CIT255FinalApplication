@@ -43,7 +43,7 @@ namespace Game_DataAccessLayer
                     SqlCommand cmd = new SqlCommand(s, connection);
                     cmd.Connection.Open();
                     using (DbDataReader reader = cmd.ExecuteReader())
-                    {
+                    {                    
                         var ordinals = new
                         {
                             Id = reader.GetOrdinal("id"),
@@ -59,6 +59,8 @@ namespace Game_DataAccessLayer
                             Rating = reader.GetOrdinal("rating"),
                             Comment = reader.GetOrdinal("comment")
                         };
+
+                        _games.Clear();
 
                         while (reader.Read() == true)
                         {
@@ -163,7 +165,7 @@ namespace Game_DataAccessLayer
         /// <returns></returns>
         public string Insert(Game game)
         {
-            string query = $"IF NOT EXISTS (SELECT 1 FROM GameView WHERE name = '{game.GameName}' AND format_id = {game.FormatId} AND publisher_id = {game.PublisherId})" + "\n"
+            string query = $"IF NOT EXISTS (SELECT 1 FROM game WHERE name = '{game.GameName}' AND format_id = {game.FormatId} AND publisher_id = {game.PublisherId})" + "\n"
                         + "INSERT GameView (comment, discontinued, format_id, maximum_player_count, "
                         + "minimum_player_count, name, publisher_id, rating, release_date)" + "\n"
                         + $"VALUES ('{game.Comment}',{(game.Discontinued ? 1 : 0)},{game.FormatId},{game.MaximumPlayerCount}, "
@@ -174,10 +176,10 @@ namespace Game_DataAccessLayer
 
         public string Update(Game game)
         {
-            string query = $"IF NOT EXISTS (SELECT 1 FROM GameView WHERE name = '{game.GameName}' AND format_id = {game.FormatId} AND publisher_id = {game.PublisherId})" + "\n"
-                          + "UPDATE GameView" + "\n"
-                          + $"SET comment = '{game.Comment}',discontinued = '{(game.Discontinued ? 1 : 0)}', format_id = {game.FormatId}, maximum_player_count = {game.MaximumPlayerCount}, "
-                          + $"minimum_player_count = {game.MinimumPlayerCount}, name = '{game.GameName}' , publisher_id = {game.PublisherId}, rating = {game.Rating}, release_date = '{game.ReleaseDate}')"
+            string query = $"IF NOT EXISTS (SELECT 1 FROM game WHERE name = '{game.GameName}' AND format_id = {game.FormatId} AND publisher_id = {game.PublisherId} AND id != {game.Id})" + "\n"
+                          + "UPDATE game" + "\n"
+                          + $"SET comment = '{game.Comment}', discontinued = {(game.Discontinued ? 1 : 0)}, format_id = {game.FormatId}, maximum_player_count = {game.MaximumPlayerCount}, "
+                          + $"minimum_player_count = {game.MinimumPlayerCount}, name = '{game.GameName}', publisher_id = {game.PublisherId}, rating = {game.Rating}, release_date = '{game.ReleaseDate}' "
                           + $"WHERE id = {game.Id}";
 
             return ExecuteSql(query);
@@ -186,7 +188,7 @@ namespace Game_DataAccessLayer
         public string Delete(int id)
         {
 
-            string query = "DELETE GameView" + "\n"
+            string query = "DELETE game" + "\n"
                        + $"WHERE id = {id}";
 
             return ExecuteSql(query);
@@ -244,6 +246,8 @@ namespace Game_DataAccessLayer
                             Id = reader.GetOrdinal("id"),
                             FormatName = reader.GetOrdinal("format")
                         };
+
+                        _gameFormats.Clear();
 
                         while (reader.Read())
                         {

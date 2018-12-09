@@ -7,7 +7,7 @@
        
         mc:Ignorable="d"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        Title="Game Viewer" FontSize="16" FontFamily="Palatino Linotype" ContentStringFormat=" {0} records found" Width="719.657" Height="354.518">
+        Title="Game Viewer" FontSize="16" FontFamily="Palatino Linotype" ContentStringFormat=" {0} records found" Width="719.657" Height="354.518" Loaded="Window_Loaded">
     <Window.Resources>
         <local:BooleanConverter x:Key="BoolToYes" />
     </Window.Resources>
@@ -38,10 +38,10 @@
             <TextBox x:Name="txt_GameName" HorizontalAlignment="Left" Margin="27,2,0,0" Grid.Row="1" Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" FontSize="16" FontFamily="Palatino Linotype" Height="28" TabIndex="1"/>
 
             <Label Content="Publisher" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="0" Grid.Column="1" VerticalAlignment="Top" FontSize="16" FontFamily="Palatino Linotype" Padding="0" Width="73" Height="22"/>
-            <ComboBox x:Name="cmb_Publisher" ItemsSource="{Binding GamePublisherCollection}" SelectedValuePath="Id" DisplayMemberPath="PublisherName" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180" Margin="10,2,0,0" Grid.Row="1" Grid.Column="1" FontSize="16" FontFamily="Palatino Linotype" Height="28" TabIndex="2"/>
+            <ComboBox x:Name="cmb_Publisher" ItemsSource="{Binding GamePublisherCollection}" SelectedValuePath="Id" DisplayMemberPath="PublisherName" HorizontalAlignment="Left" VerticalAlignment="Top" Width="190" Margin="10,2,0,0" Grid.Row="1" Grid.Column="1" FontSize="16" FontFamily="Palatino Linotype" Height="28" TabIndex="2"/>
 
             <Label Content="Format" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="0" Grid.Column="2" VerticalAlignment="Top" FontSize="16" FontFamily="Palatino Linotype" Padding="0" Width="56" Height="22"/>
-            <ComboBox x:Name="cmb_GameFormat" ItemsSource="{Binding GameFormatCollection}" SelectedValuePath="Id" DisplayMemberPath="FormatName" HorizontalAlignment="Left" VerticalAlignment="Top" Width="180" Margin="10,2,0,0" Grid.Row="1" Grid.Column="2" FontSize="16" FontFamily="Palatino Linotype" Height="28" TabIndex="3"/>
+            <ComboBox x:Name="cmb_GameFormat" ItemsSource="{Binding GameFormatCollection}" SelectedValuePath="Id" DisplayMemberPath="FormatName" HorizontalAlignment="Left" VerticalAlignment="Top" Width="190" Margin="10,2,0,0" Grid.Row="1" Grid.Column="2" FontSize="16" FontFamily="Palatino Linotype" Height="28" TabIndex="3"/>
 
             <Label Content="Rating" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="0" Grid.Column="3" VerticalAlignment="Top" FontSize="16" FontFamily="Palatino Linotype" Padding="0" Width="52" Height="22"/>
             <ComboBox x:Name="cmb_Rating" ItemsSource="{Binding RatingList}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="49" Margin="10,2,0,0" Grid.Row="1" Grid.Column="3" FontSize="16" FontFamily="Palatino Linotype" Height="28" TabIndex="4"/>
@@ -61,12 +61,11 @@
                     <ScaleTransform ScaleX="2" ScaleY="2" />
                 </CheckBox.LayoutTransform>
             </CheckBox>
-            <TextBox x:Name="txt_MaximumPlayerCount" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="10,2,0,0" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="ValidateNumeric" TabIndex="6"/>
-            <TextBox x:Name="txt_MinimumPlayerCount" HorizontalAlignment="Left" Height="23" Margin="24,2,0,0" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="ValidateNumeric" TabIndex="5" />
+            <TextBox x:Name="txt_MaximumPlayerCount" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="10,2,0,0" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="ValidateNumeric" TabIndex="6" LostFocus="ComparePlayerNumbers"/>
+            <TextBox x:Name="txt_MinimumPlayerCount" HorizontalAlignment="Left" Height="23" Margin="24,2,0,0" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" PreviewTextInput="ValidateNumeric" TabIndex="5" LostFocus="ComparePlayerNumbers" />
         </Grid>
         <Grid Margin="27,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="533">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
@@ -75,9 +74,9 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Button  x:Name="btn_Date" Content="Clear" HorizontalAlignment="Left" Margin="0,5,0,0" Grid.Column="0" VerticalAlignment="Top" Height="28" Click="btn_Clear_Click" />
-            <Button x:Name="btn_Add" Content="Add" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" Click="btn_Add_Click" Margin="0,5,0,0" VerticalAlignment="Top"/>
-            <Button x:Name="btn_Update" Content="Update" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2" Click="btn_Update_Click" Margin="0,5,0,0" VerticalAlignment="Center"/>
-            <Button x:Name="btn_Delete" Content="Delete" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="3" Click="btn_Delete_Click" Margin="0,5,0,0" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
+            <Button x:Name="btn_Add" Content="Add" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Click="btn_Add_Click" Margin="0,5,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="btn_Update" Content="Update" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Click="btn_Update_Click" Margin="0,5,0,0" VerticalAlignment="Center"/>
+            <Button x:Name="btn_Delete" Content="Delete" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="2" Click="btn_Delete_Click" Margin="0,5,0,0" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
         </Grid>
         <Button x:Name="btn_Close" Content="Close" HorizontalAlignment="Center" Click="btn_Close_Click" Margin="0,20,0,0" VerticalAlignment="Center"/>
 
