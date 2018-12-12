@@ -84,7 +84,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Button x:Name="btn_Add" Content="Add New Game" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Click="btn_Add_Click" Margin="0,2,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="btn_Add" Content="Add New Game" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Click="btn_Add_Click" Margin="0,5,0,0" VerticalAlignment="Top"/>
             <Button x:Name="btn_Detail" Content="View Game Detail" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Click="btn_Detail_Click" Margin="0,5,0,0" VerticalAlignment="Center"/>
             <Button x:Name="btn_Exit" Content="Exit" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="2" Click="btn_Exit_Click" Margin="0,5,0,0" Grid.ColumnSpan="2" VerticalAlignment="Center"/>
         </Grid>

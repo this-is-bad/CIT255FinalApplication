@@ -197,7 +197,7 @@ namespace Game_DataAccessLayer
                     //
                     // delete all games in the table to reset the collection
                     //
-                    string sd = "DELETE GameView";
+                    string sd = "DELETE game";
                     SqlCommand del = new SqlCommand(sd, connection);
                     del.Connection.Open();
 
@@ -205,7 +205,7 @@ namespace Game_DataAccessLayer
 
                     if (val != "")
                     {
-                        string si = "INSERT GameView (comment, discontinued, format_id, maximum_player_count, minimum_player_count, name, publisher_id, rating, release_date)" +
+                        string si = "INSERT game (comment, discontinued, format_id, maximum_player_count, minimum_player_count, name, publisher_id, rating, release_date)" +
                                     "VALUES";
                         SqlCommand ins = new SqlCommand(si, connection);
                         ins.Connection.Open();

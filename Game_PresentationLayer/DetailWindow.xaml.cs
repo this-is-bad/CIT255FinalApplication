@@ -139,7 +139,7 @@ namespace Game_PresentationLayer
             txt_MinimumPlayerCount.Text = _game.MinimumPlayerCount.ToString();
             cmb_GameFormat.SelectedValue = _game.FormatId;
             cmb_Publisher.SelectedValue = _game.PublisherId;
-            cmb_Rating.SelectedValue = _game.Rating.ToString();//SelectedIndex = GameRatingList.RatingList.IndexOf(_game.Rating.ToString());
+            cmb_Rating.SelectedValue = _game.Rating.ToString();
             dtpick_ReleaseDate.SelectedDate = Convert.ToDateTime(_game.ReleaseDate);
         }
 
@@ -150,6 +150,8 @@ namespace Game_PresentationLayer
             if (result == "")
             {
                 ClearForm();
+                _game = new Game();
+                Show_Hide_Buttons();
             }
             else
             {
@@ -196,9 +198,12 @@ namespace Game_PresentationLayer
             if (_game.Id > 0)
             {
                 btn_Add.Visibility = Visibility.Hidden;
+                btn_Update.Visibility = Visibility.Visible;
+                btn_Delete.Visibility = Visibility.Visible;
             }
             else
             {
+                btn_Add.Visibility = Visibility.Visible;
                 btn_Update.Visibility = Visibility.Hidden;
                 btn_Delete.Visibility = Visibility.Hidden;
             }
